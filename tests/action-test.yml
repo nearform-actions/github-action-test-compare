@@ -1,10 +1,3 @@
-# github-action-test-compare
-
-Compare tests against production
-
-#### ./github/workflows/test-compare.yml
-
-```yml
 name: Test compare
 on:
   pull_request:
@@ -12,7 +5,6 @@ on:
 
 jobs:
   run:
-    if: contains(github.event.pull_request.labels.*.name, 'performance')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -20,9 +12,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          path: testAction
 
       - name: Test compare
-        uses: ianlnf/github-action-test-compare@main
+        uses: ./testAction
         with:
           tests: __tests__
-```
