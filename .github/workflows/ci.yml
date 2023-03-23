@@ -17,6 +17,7 @@ jobs:
           node-version-file: '.nvmrc'
       - run: |
           npm ci
+          npm run lint
           npm test
 
   automerge:
