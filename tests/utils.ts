@@ -1,6 +1,6 @@
-import * as path from "path";
-import { CreateRepositoryFile, MockGithub } from "@kie/mock-github";
-import { Act } from "@kie/act-js";
+import path from 'path';
+import { CreateRepositoryFile, MockGithub } from '@kie/mock-github';
+import { Act } from '@kie/act-js';
 
 export type MockGitHub = {
   setup: () => Promise<void>;
@@ -9,23 +9,23 @@ export type MockGitHub = {
 };
 
 export function createMockGitHub({
-  additionalFiles = [],
+  files = [],
 }: {
-  additionalFiles?: CreateRepositoryFile[];
+  files?: CreateRepositoryFile[];
 } = {}): MockGitHub {
   const mockGitHub = new MockGithub({
     repo: {
       testAction: {
         files: [
           {
-            src: path.join(__dirname, "action-test.yml"),
-            dest: ".github/workflows/test.yml",
+            src: path.join(__dirname, 'action-test.yml'),
+            dest: '.github/workflows/test.yml',
           },
           {
-            src: path.resolve(__dirname, "..", "action.yml"),
-            dest: "/action.yml",
+            src: path.resolve(__dirname, '..', 'action.yml'),
+            dest: '/action.yml',
           },
-          ...additionalFiles,
+          ...files,
         ],
       },
     },
@@ -35,13 +35,13 @@ export function createMockGitHub({
     setup: () => mockGitHub.setup(),
     teardown: () => mockGitHub.teardown(),
     act: async () => {
-      const act = new Act(mockGitHub.repo.getPath("testAction"));
-      return act.setGithubToken("token");
+      const act = new Act(mockGitHub.repo.getPath('testAction'));
+      return act.setGithubToken('token');
     },
   };
 }
 
-export function successStep(name: string, output: string = "") {
+export function successStep(name: string, output: string = '') {
   return {
     name,
     output,
@@ -49,7 +49,7 @@ export function successStep(name: string, output: string = "") {
   };
 }
 
-export function failedStep(name: string, output: string = "") {
+export function failedStep(name: string, output: string = '') {
   return {
     name,
     output,

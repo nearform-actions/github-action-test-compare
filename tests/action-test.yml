@@ -17,5 +17,3 @@ jobs:
 
       - name: Test compare
         uses: ./testAction
-        with:
-          tests: __tests__

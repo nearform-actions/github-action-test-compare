@@ -8,9 +8,9 @@
     "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider ncc build src/main.ts --source-map --license licenses.txt",
     "lint": "eslint .",
     "test": "is-ci-cli test:ci test:local",
-    "test:ci": "vitest --run",
-    "test:local": "cross-env ACT_BINARY=/usr/local/bin/act vitest --run",
-    "test:watch": "cross-env ACT_BINARY=/usr/local/bin/act vitest --watch",
+    "test:ci": "vitest --single-thread --run",
+    "test:local": "cross-env ACT_BINARY=/usr/local/bin/act vitest --single-thread --run",
+    "test:watch": "cross-env ACT_BINARY=/usr/local/bin/act vitest --single-thread --watch",
     "test:coverage": "vitest run --coverage",
     "prepare": "husky install"
   },
