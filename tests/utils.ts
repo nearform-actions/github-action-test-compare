@@ -36,56 +36,36 @@ export function createMockGitHub({
       src: path.resolve(__dirname, '..', 'action.yml'),
       dest: '/action.yml',
     },
+    {
+      src: path.resolve(__dirname, './branches/main'),
+      dest: '__target__',
+    },
+    {
+      src: path.resolve(__dirname, '..', 'action.yml'),
+      dest: '__target__/action.yml',
+    },
   ];
 
   const mockGitHub = new MockGithub({
     repo: {
       testAction: {
-        pushedBranches: ['target', 'pull-request'],
-        currentBranch: 'pull-request',
-        history: [
-          {
-            action: GitActionTypes.PUSH,
-            branch: 'target',
-            files: mainFiles,
-          },
-          {
-            action: GitActionTypes.MERGE,
-            head: 'target',
-            base: 'pull-request',
-          },
-          {
-            action: GitActionTypes.PUSH,
-            branch: 'pull-request',
-            files,
-          },
-        ],
-        // pushedBranches: ['main', 'pr'],
+        files: [...mainFiles, ...files],
         // history: [
         //   {
         //     action: GitActionTypes.PUSH,
-        //     branch: 'main',
-        //     files: [
-        //       {
-        //         src: path.join(__dirname, 'action-test.yml'),
-        //         dest: '.github/workflows/test.yml',
-        //       },
-        //       {
-        //         src: path.resolve(__dirname, '..', 'action.yml'),
-        //         dest: '/action.yml',
-        //       },
-        //     ],
+        //     branch: 'target',
+        //     files: mainFiles,
         //   },
-        //   {
-        //     action: GitActionTypes.PUSH,
-        //     branch: 'pr',
-        //     files: [
-        //       {
-        //         src: path.resolve(__dirname, '..', 'action.yml'),
-        //         dest: '/test/action.yml',
-        //       },
-        //     ],
-        //   },
+        // {
+        //   action: GitActionTypes.MERGE,
+        //   head: 'target',
+        //   base: 'pull-request',
+        // },
+        // {
+        //   action: GitActionTypes.PUSH,
+        //   branch: 'pull-request',
+        //   files,
+        // },
         //],
       },
     },
@@ -98,27 +78,11 @@ export function createMockGitHub({
       const act = new Act(mockGitHub.repo.getPath('testAction'));
       const configuredAct = factory(act.setGithubToken('token'));
 
-      const repoPath = mockGitHub.repo.getPath('testAction');
-
-      if (!repoPath) {
-        throw new Error('No mock GitHub repo path found.');
-      }
-
-      const parentDir = path.dirname(repoPath);
-
       return {
         runEvent: (event: string, options: RunOpts = {}) => {
           const { logFile, ...rest } = options;
 
-          console.log(logActOutput(logFile ?? ''));
-
           return configuredAct.runEvent(event, {
-            // cwd: parentDir,
-            // workflowFile: path.join(
-            //   repoPath,
-            //   '.github/workflows/action-test.yml',
-            // ),
-            // bind: true,
             ...(logFile ? logActOutput(logFile) : {}),
             ...rest,
           });
