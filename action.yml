@@ -1,4 +1,4 @@
-name: 'github-action-test'
+name: 'github-action-test-compare'
 description: 'Compare tests against production'
 author: 'NearForm'
 inputs:
