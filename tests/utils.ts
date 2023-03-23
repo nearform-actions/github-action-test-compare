@@ -1,9 +1,5 @@
 import path from 'path';
-import {
-  CreateRepositoryFile,
-  GitActionTypes,
-  MockGithub,
-} from '@kie/mock-github';
+import { CreateRepositoryFile, MockGithub } from '@kie/mock-github';
 import { Act, RunOpts, Step } from '@kie/act-js';
 
 export type ConfiguredAct = {
@@ -92,18 +88,18 @@ export function createMockGitHub({
   };
 }
 
-export function successStep(name: string, output: string = '') {
+export function successStep(name: string, output?: string) {
   return {
     name,
-    output,
+    ...(output ? { output } : {}),
     status: 0,
   };
 }
 
-export function failedStep(name: string, output: string = '') {
+export function failedStep(name: string, output?: string) {
   return {
     name,
-    output,
+    ...(output ? { output } : {}),
     status: 1,
   };
 }

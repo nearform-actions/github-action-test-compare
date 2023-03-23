@@ -8,8 +8,8 @@ describe('github-action-test-compare', () => {
     mockGitHub = createMockGitHub({
       files: [
         {
-          src: path.join(__dirname, './branches/pr-production'),
-          dest: '.',
+          src: path.join(__dirname, './branches/pr-production/test'),
+          dest: 'test',
         },
       ],
     });
@@ -18,10 +18,10 @@ describe('github-action-test-compare', () => {
   });
 
   afterEach(async () => {
-    // await mockGitHub.teardown();
+    await mockGitHub.teardown();
   });
 
-  it('should return error for no tests folder available', async () => {
+  it('should return action success if the tests fail due to tests touching production code', async () => {
     const { runEvent } = await mockGitHub.configure((act) =>
       act.setEvent({
         pull_request: {
@@ -39,30 +39,14 @@ describe('github-action-test-compare', () => {
       logFile: 'failing-tests.log',
     });
 
-    //     const result = await act
-    //       .setEvent()
-    //       .runEvent('pull_request', {
-    // cwd:
-    //       });
-
-    console.log(
-      (result.find((s) => s.name === 'Main Dump vars') as any)?.output ??
-        'No dumped vars',
+    expect(
+      result.map((step) => ({ name: step.name, status: step.status })),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining(failedStep('Main Test compare')),
+        expect.objectContaining(successStep('Main Install')),
+        expect.objectContaining(failedStep('Main Run tests')),
+      ]),
     );
-
-    console.log(
-      (result.find((s) => s.name === 'Main Install') as any)?.output ??
-        'No data',
-    );
-
-    expect(result).toEqual([
-      successStep('Main Checkout'),
-      failedStep('Main Test compare'),
-      // failedStep(
-      //   'Main Copy tests',
-      //   `cp: cannot stat '__tests__': No such file or directory`,
-      // ),
-      successStep('Post Test compare'),
-    ]);
   });
 });

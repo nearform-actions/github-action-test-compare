@@ -22,15 +22,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Dump vars
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-        INPUTS: ${{ toJson(inputs) }}
-      shell: bash
-      run: |
-        echo "$GITHUB_CONTEXT"
-        echo "$INPUTS"
-
     - name: Check target branch
       if: github.event.pull_request.base.ref == ''
       uses: actions/github-script@v3
@@ -43,9 +34,9 @@ runs:
         ref: ${{ github.event.pull_request.base.ref }}
         path: ${{ inputs.targetFolder }}
 
-    # - name: Copy tests
-    #   shell: sh
-    #   run: cp -R ${{ inputs.tests }} ${{ inputs.targetFolder }}
+    - name: Copy tests
+      shell: sh
+      run: cp -R ${{ inputs.tests }} ${{ inputs.targetFolder }}
 
     - name: Install
       shell: sh
