@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Test compare
-        uses: ianlnf/github-action-test-compare@main
+        uses: nearform-actions/github-action-test-compare@v1
         with:
           tests: __tests__
 ```

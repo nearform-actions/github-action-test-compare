@@ -1,26 +1,26 @@
-name: "github-action-test"
-description: "Action description"
-author: "NearForm"
+name: 'github-action-test'
+description: 'Compare tests against production'
+author: 'NearForm'
 inputs:
   installCommand:
     required: false
-    description: "Install command for target branch"
-    default: "npm install"
+    description: 'Install command for target branch'
+    default: 'npm install'
   testCommand:
     required: false
-    description: "Test command for target branch"
-    default: "npm test"
+    description: 'Test command for target branch'
+    default: 'npm test'
   tests:
     required: false
-    description: "Test files/folders as a comma-separated list of globs"
-    default: "test"
+    description: 'Test files/folders as a comma-separated list of globs'
+    default: 'test'
   targetFolder:
     required: false
-    description: "The folder for the target branch checkout"
-    default: "__target__"
+    description: 'The folder for the target branch checkout'
+    default: '__target__'
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Check target branch
       if: github.event.pull_request.base.ref == ''
@@ -57,7 +57,7 @@ runs:
       id: find-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        comment-author: "github-actions[bot]"
+        comment-author: 'github-actions[bot]'
         body-includes: Test compare
 
     - name: Create or update comment
