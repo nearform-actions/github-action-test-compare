@@ -35,9 +35,8 @@ describe('github-action-test-compare', () => {
   });
 
   it('should return error for no tests folder available', async () => {
-    const act = await mockGitHub.act();
-    const result = await act
-      .setEvent({
+    const { runEvent } = await mockGitHub.configure((act) =>
+      act.setEvent({
         pull_request: {
           head: {
             ref: 'pr',
@@ -46,8 +45,20 @@ describe('github-action-test-compare', () => {
             ref: 'main',
           },
         },
-      })
-      .runEvent('pull_request');
+      }),
+    );
+
+    const result = await runEvent('pull_request');
+
+    //     const result = await act
+    //       .setEvent()
+    //       .runEvent('pull_request', {
+    // cwd:
+    //       });
+
+    console.log(
+      (result.find((s) => s.name === 'Main Dump vars') as any).output,
+    );
 
     expect(result).toEqual([
       successStep('Main Checkout'),

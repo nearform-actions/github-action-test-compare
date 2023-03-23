@@ -4,12 +4,16 @@ import {
   GitActionTypes,
   MockGithub,
 } from '@kie/mock-github';
-import { Act } from '@kie/act-js';
+import { Act, RunOpts, Step } from '@kie/act-js';
+
+export type ConfiguredAct = {
+  runEvent: (event: string, opts?: RunOpts | undefined) => Promise<Step[]>;
+};
 
 export type MockGitHub = {
   setup: () => Promise<void>;
   teardown: () => Promise<void>;
-  act: () => Promise<Act>;
+  configure: (factory?: (act: Act) => Act) => Promise<ConfiguredAct>;
 };
 
 export function createMockGitHub({
@@ -64,9 +68,28 @@ export function createMockGitHub({
   return {
     setup: () => mockGitHub.setup(),
     teardown: () => mockGitHub.teardown(),
-    act: async () => {
+    configure: async (factory: (act: Act) => Act = (act) => act) => {
       const act = new Act(mockGitHub.repo.getPath('testAction'));
-      return act.setGithubToken('token');
+      const configuredAct = factory(act.setGithubToken('token'));
+
+      const repoPath = mockGitHub.repo.getPath('testAction');
+
+      if (!repoPath) {
+        throw new Error('No mock GitHub repo path found.');
+      }
+
+      const parentDir = path.dirname(repoPath);
+
+      return {
+        runEvent: (event: string, opts?: RunOpts | undefined) => {
+          return configuredAct.runEvent(event, {
+            cwd: parentDir,
+            workflowFile: repoPath,
+            bind: true,
+            ...(opts ?? {}),
+          });
+        },
+      };
     },
   };
 }
