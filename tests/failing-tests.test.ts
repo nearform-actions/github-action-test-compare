@@ -7,22 +7,23 @@ describe('github-action-test-compare', () => {
   beforeEach(async () => {
     mockGitHub = createMockGitHub({
       files: [
-        {
-          src: path.join(__dirname, 'production/package.json'),
-          dest: 'package.json',
-        },
-        {
-          src: path.join(__dirname, 'production/vitest.config.ts'),
-          dest: 'vitest.config.json',
-        },
-        {
-          src: path.join(__dirname, 'production/test/production-code.ts'),
-          dest: 'test/production-code.ts',
-        },
-        {
-          src: path.join(__dirname, 'production/test/production.test.ts'),
-          dest: 'test/production.test.ts',
-        },
+        // {
+        //   src: path.join(__dirname, 'production/package.json'),
+        //   dest: 'package.json',
+        // },
+        // {
+        //   src: path.join(__dirname, 'production/vitest.config.ts'),
+        //   dest: 'vitest.config.json',
+        // },
+        // {
+        //   src: path.join(__dirname, 'production/test/production-code.ts'),
+        //   dest: 'test/production-code.ts',
+        // },
+        // {
+        //   src: path.join(__dirname, 'production/test/production.test.ts'),
+        //   dest: 'test/production.test.ts',
+        // },
+        { src: path.join(__dirname, 'production'), dest: '.' },
       ],
     });
 
