@@ -16,22 +16,48 @@ export type MockGitHub = {
   configure: (factory?: (act: Act) => Act) => Promise<ConfiguredAct>;
 };
 
+function logActOutput(logFile: string) {
+  return process.env.ACT_LOG
+    ? { logFile: path.join(process.cwd(), logFile) }
+    : {};
+}
+
 export function createMockGitHub({
   files = [],
 }: {
   files?: CreateRepositoryFile[];
 } = {}): MockGitHub {
+  const mainFiles = [
+    {
+      src: path.resolve(__dirname, './branches/main'),
+      dest: '.',
+    },
+    {
+      src: path.resolve(__dirname, '..', 'action.yml'),
+      dest: '/action.yml',
+    },
+  ];
+
   const mockGitHub = new MockGithub({
     repo: {
       testAction: {
-        files: [
+        pushedBranches: ['target', 'pull-request'],
+        currentBranch: 'pull-request',
+        history: [
           {
-            src: path.resolve(__dirname, './branches/main'),
-            dest: '.',
+            action: GitActionTypes.PUSH,
+            branch: 'target',
+            files: mainFiles,
           },
           {
-            src: path.resolve(__dirname, '..', 'action.yml'),
-            dest: '/action.yml',
+            action: GitActionTypes.MERGE,
+            head: 'target',
+            base: 'pull-request',
+          },
+          {
+            action: GitActionTypes.PUSH,
+            branch: 'pull-request',
+            files,
           },
         ],
         // pushedBranches: ['main', 'pr'],
@@ -81,12 +107,20 @@ export function createMockGitHub({
       const parentDir = path.dirname(repoPath);
 
       return {
-        runEvent: (event: string, opts?: RunOpts | undefined) => {
+        runEvent: (event: string, options: RunOpts = {}) => {
+          const { logFile, ...rest } = options;
+
+          console.log(logActOutput(logFile ?? ''));
+
           return configuredAct.runEvent(event, {
-            cwd: parentDir,
-            workflowFile: repoPath,
-            bind: true,
-            ...(opts ?? {}),
+            // cwd: parentDir,
+            // workflowFile: path.join(
+            //   repoPath,
+            //   '.github/workflows/action-test.yml',
+            // ),
+            // bind: true,
+            ...(logFile ? logActOutput(logFile) : {}),
+            ...rest,
           });
         },
       };

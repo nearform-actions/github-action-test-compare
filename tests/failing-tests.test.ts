@@ -23,7 +23,10 @@ describe('github-action-test-compare', () => {
         //   src: path.join(__dirname, 'production/test/production.test.ts'),
         //   dest: 'test/production.test.ts',
         // },
-        { src: path.join(__dirname, 'production'), dest: '.' },
+        {
+          src: path.join(__dirname, './branches/pr-production'),
+          dest: '.',
+        },
       ],
     });
 
@@ -31,7 +34,7 @@ describe('github-action-test-compare', () => {
   });
 
   afterEach(async () => {
-    await mockGitHub.teardown();
+    // await mockGitHub.teardown();
   });
 
   it('should return error for no tests folder available', async () => {
@@ -39,7 +42,7 @@ describe('github-action-test-compare', () => {
       act.setEvent({
         pull_request: {
           head: {
-            ref: 'pr',
+            ref: 'pull-request2',
           },
           base: {
             ref: 'main',
@@ -48,7 +51,9 @@ describe('github-action-test-compare', () => {
       }),
     );
 
-    const result = await runEvent('pull_request');
+    const result = await runEvent('pull_request', {
+      logFile: 'failing-tests.log',
+    });
 
     //     const result = await act
     //       .setEvent()
@@ -57,7 +62,13 @@ describe('github-action-test-compare', () => {
     //       });
 
     console.log(
-      (result.find((s) => s.name === 'Main Dump vars') as any).output,
+      (result.find((s) => s.name === 'Main Dump vars') as any)?.output ??
+        'No dumped vars',
+    );
+
+    console.log(
+      (result.find((s) => s.name === 'Main Install') as any)?.output ??
+        'No data',
     );
 
     expect(result).toEqual([

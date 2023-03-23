@@ -11,6 +11,7 @@
     "test:ci": "vitest --single-thread --run",
     "test:local": "cross-env ACT_BINARY=/usr/local/bin/act vitest --single-thread --run",
     "test:watch": "cross-env ACT_BINARY=/usr/local/bin/act vitest --single-thread --watch",
+    "test:log": "cross-env ACT_LOG=true ACT_BINARY=/usr/local/bin/act vitest --single-thread --run",
     "test:coverage": "vitest run --coverage",
     "prepare": "husky install"
   },
