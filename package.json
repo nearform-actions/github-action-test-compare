@@ -1,34 +1,51 @@
 {
-  "name": "hub-template",
+  "name": "github-action-test-compare",
   "version": "1.0.0",
-  "description": "Template to start a new repository on the hub",
-  "main": "index.js",
+  "description": "Compare tests against production",
   "type": "module",
   "scripts": {
-    "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "lint": "eslint . --ext .ts",
+    "test": "is-ci-cli test:ci test:local",
+    "test:ci": "vitest --run",
+    "test:local": "cross-env ACT_BINARY=/usr/local/bin/act vitest --run",
+    "test:watch": "cross-env ACT_BINARY=/usr/local/bin/act vitest --watch",
+    "test:coverage": "vitest run --coverage",
     "prepare": "husky install"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nearform/hub-template.git"
+    "url": "git+https://github.com/nearform-actions/github-action-test-compare.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nearform/hub-template/issues"
+    "url": "https://github.com/nearform-actions/github-action-test-compare/issues"
   },
-  "homepage": "https://github.com/nearform/hub-template#readme",
+  "homepage": "https://github.com/nearform-actions/github-action-test-compare#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.5.0",
     "@commitlint/config-conventional": "^17.4.4",
+    "@kie/act-js": "^2.0.6",
+    "@kie/mock-github": "^1.0.3",
+    "@types/node": "^18.15.3",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "@vercel/ncc": "^0.36.1",
+    "cross-env": "^7.0.3",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",
+    "is-ci-cli": "^2.2.0",
     "lint-staged": "^13.2.0",
-    "prettier": "^2.8.6"
+    "prettier": "^2.8.6",
+    "typescript": "^5.0.2",
+    "vite-tsconfig-paths": "^4.0.7",
+    "vitest": "^0.29.5"
   },
   "lint-staged": {
     "*.{js,jsx}": "eslint --cache --fix"

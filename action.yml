@@ -1,0 +1,94 @@
+name: 'github-action-test-compare'
+description: 'Compare tests against production'
+author: 'NearForm'
+inputs:
+  installCommand:
+    required: false
+    description: 'Install command for target branch'
+    default: 'npm install'
+  testCommand:
+    required: false
+    description: 'Test command for target branch'
+    default: 'npm test'
+  tests:
+    required: false
+    description: 'Test files/folders as a comma-separated list of globs'
+    default: 'test'
+  targetFolder:
+    required: false
+    description: 'The folder for the target branch checkout'
+    default: '__target__'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Check target branch
+      if: github.event.pull_request.base.ref == ''
+      uses: actions/github-script@v3
+      with:
+        script: |
+          core.setFailed('No target branch found.')
+
+    - name: Checkout branch
+      uses: actions/checkout@v3
+
+    - name: Checkout target branch
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.base.ref }}
+        path: ${{ inputs.targetFolder }}
+
+    - name: Copy tests
+      shell: sh
+      run: cp -R ${{ inputs.tests }} ${{ inputs.targetFolder }}
+
+    - name: Install
+      shell: sh
+      working-directory: ${{ inputs.targetFolder }}
+      run: |
+        ${{ inputs.installCommand }}
+
+    - name: Run tests
+      shell: sh
+      id: run-tests
+      working-directory: ${{ inputs.targetFolder }}
+      continue-on-error: true
+      run: |
+        ${{ inputs.testCommand }}
+
+    - name: Find Comment
+      uses: peter-evans/find-comment@v2
+      id: find-comment
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-action-test-compare[bot]'
+        body-includes: Test compare
+
+    - name: Create or update comment
+      if: steps.run-tests.outcome == 'success'
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.find-comment.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          ## Test compare ⚠️
+          The tests within this PR have passed against the production code within the **${{ github.event.pull_request.base.ref }}** branch. 
+          If tests have been added or modified, then they are not targeting production code changes within this PR. Please review.
+        edit-mode: replace
+
+    - name: Check test success, fail action
+      if: steps.run-tests.outcome == 'success'
+      shell: sh
+      run: exit 1
+
+    - name: Check test failure, action success, delete comment
+      if: steps.run-tests.outcome != 'success' && steps.find-comment.outputs.comment-id != ''
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ github.token }}
+        script: |
+          github.rest.issues.deleteComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            comment_id: ${{ steps.find-comment.outputs.comment-id }}
+          })
