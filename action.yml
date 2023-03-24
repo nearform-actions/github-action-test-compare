@@ -32,12 +32,6 @@ runs:
     - name: Checkout branch
       uses: actions/checkout@v3
 
-    - name: Dump var
-      env:
-        VAR: ${{ github.event.pull_request.base.ref }}
-      shell: sh
-      run: echo "$VAR"
-
     - name: Checkout target branch
       uses: actions/checkout@v3
       with:
