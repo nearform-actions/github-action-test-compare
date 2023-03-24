@@ -30,6 +30,7 @@ describe('github-action-test-compare', () => {
     expect(result).toMatchObject([
       successStep('Main Checkout'),
       failedStep('Main Test compare'),
+      successStep('Main Checkout branch'),
       failedStep(
         'Main Copy tests',
         `cp: cannot stat '__tests__': No such file or directory`,
