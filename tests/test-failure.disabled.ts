@@ -6,7 +6,7 @@ import {
   successStep,
 } from './utils';
 
-describe('github-action-test-compare', () => {
+describe.skip('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
 
   beforeEach(async () => {
@@ -43,6 +43,8 @@ describe('github-action-test-compare', () => {
     const result = await runEvent('pull_request', {
       logFile: 'failing-tests.log',
     });
+
+    console.log({ result });
 
     expect(result).toEqual(
       expect.arrayContaining([

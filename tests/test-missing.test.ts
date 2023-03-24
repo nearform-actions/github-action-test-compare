@@ -12,15 +12,38 @@ describe('github-action-test-compare', () => {
     await mockGitHub.teardown();
   });
 
+  it('should return error for no target branch available', async () => {
+    const act = await mockGitHub.configure((act) =>
+      act.setEvent({
+        pull_request: {
+          head: {
+            ref: '',
+          },
+          base: {
+            ref: 'pr',
+          },
+        },
+      }),
+    );
+
+    const result = await act.runEvent('pull_request');
+
+    console.log(
+      result.map((step) => ({ name: step.name, output: step.output })),
+    );
+
+    expect(result).toEqual([]);
+  });
+
   it('should return error for no tests folder available', async () => {
     const act = await mockGitHub.configure((act) =>
       act.setEvent({
         pull_request: {
           head: {
-            ref: 'pr',
+            ref: 'main',
           },
           base: {
-            ref: 'main',
+            ref: 'pr',
           },
         },
       }),

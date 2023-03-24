@@ -1,5 +1,9 @@
 import path from 'path';
-import { CreateRepositoryFile, MockGithub } from '@kie/mock-github';
+import {
+  CreateRepositoryFile,
+  GitActionTypes,
+  MockGithub,
+} from '@kie/mock-github';
 import { Act, RunOpts, Step } from '@kie/act-js';
 
 export type ConfiguredAct = {
@@ -32,20 +36,40 @@ export function createMockGitHub({
       src: path.resolve(__dirname, '..', 'action.yml'),
       dest: '/action.yml',
     },
-    {
-      src: path.resolve(__dirname, './branches/main'),
-      dest: '__target__',
-    },
-    {
-      src: path.resolve(__dirname, '..', 'action.yml'),
-      dest: '__target__/action.yml',
-    },
+    // {
+    //   src: path.resolve(__dirname, './branches/main'),
+    //   dest: '__target__',
+    // },
+    // {
+    //   src: path.resolve(__dirname, '..', 'action.yml'),
+    //   dest: '__target__/action.yml',
+    // },
   ];
 
+  // In the mock, the main branch is the PR, target is main
   const mockGitHub = new MockGithub({
     repo: {
-      testAction: {
-        files: [...mainFiles, ...files],
+      'owner/test': {
+        pushedBranches: ['pr'],
+        // currentBranch: 'pr',
+        files: mainFiles,
+        history: [
+          {
+            //   action: GitActionTypes.PUSH,
+            //   branch: 'main',
+            //   files: mainFiles,
+            // },
+            // {
+            //   action: GitActionTypes.MERGE,
+            //   base: 'main',
+            //   head: 'pr',
+            // },
+
+            action: GitActionTypes.PUSH,
+            branch: 'pr',
+            files,
+          },
+        ],
       },
     },
   });
@@ -54,8 +78,21 @@ export function createMockGitHub({
     setup: () => mockGitHub.setup(),
     teardown: () => mockGitHub.teardown(),
     configure: async (factory: (act: Act) => Act = (act) => act) => {
-      const act = new Act(mockGitHub.repo.getPath('testAction'));
-      const configuredAct = factory(act.setGithubToken('token'));
+      const repoPath = mockGitHub.repo.getPath('owner/test');
+      const act = new Act(repoPath);
+
+      if (!repoPath) {
+        throw new Error('No mock GitHub repo path found.');
+      }
+
+      const parentDirectory = path.dirname(repoPath);
+
+      const configuredAct = factory(
+        act
+          .setGithubToken('')
+          .setEnv('GITHUB_SERVER_URL', `${parentDirectory}${path.sep}`)
+          .setEnv('GITHUB_REPOSITORY', 'owner/test'),
+      );
 
       return {
         runEvent: (event: string, options: RunOpts = {}) => {
