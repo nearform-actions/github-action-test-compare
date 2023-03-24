@@ -18,11 +18,6 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
       - name: Test compare
         uses: nearform-actions/github-action-test-compare@v1
-        with:
-          tests: __tests__
 ```

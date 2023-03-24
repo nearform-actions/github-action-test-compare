@@ -46,23 +46,6 @@ export function createMockGitHub({
     repo: {
       testAction: {
         files: [...mainFiles, ...files],
-        // history: [
-        //   {
-        //     action: GitActionTypes.PUSH,
-        //     branch: 'target',
-        //     files: mainFiles,
-        //   },
-        // {
-        //   action: GitActionTypes.MERGE,
-        //   head: 'target',
-        //   base: 'pull-request',
-        // },
-        // {
-        //   action: GitActionTypes.PUSH,
-        //   branch: 'pull-request',
-        //   files,
-        // },
-        //],
       },
     },
   });

@@ -29,7 +29,11 @@ runs:
         script: |
           core.setFailed('No target branch found.')
 
-    - uses: actions/checkout@v3
+    - name: Checkout branch
+      uses: actions/checkout@v3
+
+    - name: Checkout target branch
+      uses: actions/checkout@v3
       with:
         ref: ${{ github.event.pull_request.base.ref }}
         path: ${{ inputs.targetFolder }}
@@ -57,7 +61,7 @@ runs:
       id: find-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        comment-author: 'github-actions[bot]'
+        comment-author: 'github-action-test-compare[bot]'
         body-includes: Test compare
 
     - name: Create or update comment
