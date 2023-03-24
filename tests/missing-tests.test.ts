@@ -1,4 +1,4 @@
-import { createMockGitHub, MockGitHub, failedStep, successStep } from './utils';
+import { createMockGitHub, MockGitHub, failedStep } from './utils';
 
 describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
