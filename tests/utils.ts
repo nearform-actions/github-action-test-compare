@@ -79,7 +79,7 @@ export function successStep(name: string, output?: string) {
   };
 }
 
-export function failedStep(name: string, output?: string) {
+export function failureStep(name: string, output?: string) {
   return {
     name,
     ...(output ? { output } : {}),

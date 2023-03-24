@@ -1,4 +1,4 @@
-import { createMockGitHub, MockGitHub, failedStep } from './utils';
+import { createMockGitHub, MockGitHub, failureStep } from './utils';
 
 describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
@@ -30,9 +30,9 @@ describe('github-action-test-compare', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        expect.objectContaining(failedStep('Main Test compare')),
+        expect.objectContaining(failureStep('Main Test compare')),
         expect.objectContaining(
-          failedStep(
+          failureStep(
             'Main Copy tests',
             `cp: cannot stat 'test': No such file or directory`,
           ),
