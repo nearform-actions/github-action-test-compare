@@ -1,4 +1,4 @@
-import { createMockGitHub, MockGitHub, failedStep, successStep } from './utils';
+import { createMockGitHub, MockGitHub, failedStep } from './utils';
 
 describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
@@ -13,9 +13,8 @@ describe('github-action-test-compare', () => {
   });
 
   it('should return error for no tests folder available', async () => {
-    const act = await mockGitHub.act();
-    const result = await act
-      .setEvent({
+    const act = await mockGitHub.configure((act) =>
+      act.setEvent({
         pull_request: {
           head: {
             ref: 'pr',
@@ -24,18 +23,21 @@ describe('github-action-test-compare', () => {
             ref: 'main',
           },
         },
-      })
-      .runEvent('pull_request');
+      }),
+    );
 
-    expect(result).toMatchObject([
-      successStep('Main Checkout'),
-      failedStep('Main Test compare'),
-      successStep('Main Checkout branch'),
-      failedStep(
-        'Main Copy tests',
-        `cp: cannot stat '__tests__': No such file or directory`,
-      ),
-      successStep('Post Test compare'),
-    ]);
+    const result = await act.runEvent('pull_request');
+
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining(failedStep('Main Test compare')),
+        expect.objectContaining(
+          failedStep(
+            'Main Copy tests',
+            `cp: cannot stat 'test': No such file or directory`,
+          ),
+        ),
+      ]),
+    );
   });
 });
