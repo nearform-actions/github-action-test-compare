@@ -22,6 +22,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Dump var
+      env:
+        VAR: ${{ github.event.pull_request.base.ref }}
+      shell: sh
+      run: echo "$VAR"
+
     - name: Check target branch
       if: github.event.pull_request.base.ref == ''
       uses: actions/github-script@v3
@@ -34,9 +40,14 @@ runs:
 
     - name: Checkout target branch
       uses: actions/checkout@v3
+      if: ${{ !env.ACT }}
       with:
+        # github-server-url: 'file:///Users/ianlovell/source/nearform-actions/github-action-test-compare/repo'
+        # github-server-url: 'https://api.github.com'
+        #  repository: 'owner/test'
         ref: ${{ github.event.pull_request.base.ref }}
         path: ${{ inputs.targetFolder }}
+        #  fetch-depth: 1
 
     - name: Copy tests
       shell: sh

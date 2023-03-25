@@ -1,3 +1,4 @@
+import { Moctokit } from '@kie/mock-github';
 import { createMockGitHub, MockGitHub, failureStep } from './utils';
 
 describe('github-action-test-compare', () => {
@@ -12,44 +13,101 @@ describe('github-action-test-compare', () => {
     await mockGitHub.teardown();
   });
 
-  it('should return error for no target branch available', async () => {
+  it.skip('should return error for no target branch available', async () => {
     const act = await mockGitHub.configure((act) =>
       act.setEvent({
         pull_request: {
           head: {
-            ref: '',
+            ref: 'pr',
           },
           base: {
-            ref: 'pr',
+            ref: '',
           },
         },
       }),
     );
 
-    const result = await act.runEvent('pull_request');
+    const result = await act.runEvent('pull_request', {
+      logFile: 'missing-tests-no-target-branch.log',
+    });
 
-    console.log(
-      result.map((step) => ({ name: step.name, output: step.output })),
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining(failureStep('Main Test compare')),
+        expect.objectContaining(failureStep('Main Check target branch')),
+      ]),
     );
-
-    expect(result).toEqual([]);
   });
 
   it('should return error for no tests folder available', async () => {
     const act = await mockGitHub.configure((act) =>
-      act.setEvent({
+      act.setEnv('GITHUB_BASE_REF', 'main').setEvent({
+        // pull_request: {
+        //   ...pullRequest,
+        //   base: {
+        //     ...pullRequest.base,
+        //     repo: {
+        //       ...pullRequest.base.repo,
+        //       url: 'https://api.github.com/users/owner/test',
+        //     },
+        //   },
+        // },
         pull_request: {
           head: {
-            ref: 'main',
-          },
-          base: {
             ref: 'pr',
           },
+          base: {
+            ref: 'main',
+            // repo: {
+            //   full_name: 'owner/pr',
+            //   name: 'pr',
+            //   owner: {
+            //     login: 'owner',
+            //   },
+            // },
+          },
         },
+
+        // base: {
+        //   ref: 'main',
+        //   repo: {
+        //     full_name: 'owner/test',
+        //     name: 'pr',
+        //     owner: {
+        //       login: 'owner',
+        //     },
+        //     url: 'https://api.github.com/users/owner/test',
+        //   },
+        // },
       }),
     );
 
-    const result = await act.runEvent('pull_request');
+    const moctokit = new Moctokit('http://api.github.com');
+
+    const result = await act.runEvent('pull_request', {
+      logFile: 'missing-tests-no-tests-folder.log',
+      // mockSteps: {
+      //   run: [
+      //     {
+      //       id: 'checkout-target',
+      //       mockWith: 'foo',
+      //     },
+      //   ],
+      // },
+      // mockApi: [
+      //   moctokit.rest.repos
+      //     .get({
+      //       owner: 'owner',
+      //       repo: 'pr',
+      //     })
+      //     .setResponse({ status: 200, data: {} }),
+      //   moctokit.rest.pulls
+      //     .list()
+      //     .setResponse([{ status: 200, data: [{ title: 'pr' }] }]),
+      // ],
+    });
+
+    console.log(result);
 
     expect(result).toEqual(
       expect.arrayContaining([

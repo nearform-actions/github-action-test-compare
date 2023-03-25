@@ -36,43 +36,53 @@ export function createMockGitHub({
       src: path.resolve(__dirname, '..', 'action.yml'),
       dest: '/action.yml',
     },
-    // {
-    //   src: path.resolve(__dirname, './branches/main'),
-    //   dest: '__target__',
-    // },
-    // {
-    //   src: path.resolve(__dirname, '..', 'action.yml'),
-    //   dest: '__target__/action.yml',
-    // },
+    {
+      src: path.resolve(__dirname, './branches/main'),
+      dest: '__target__',
+    },
+    {
+      src: path.resolve(__dirname, '..', 'action.yml'),
+      dest: '__target__/action.yml',
+    },
   ];
 
   // In the mock, the main branch is the PR, target is main
-  const mockGitHub = new MockGithub({
-    repo: {
-      'owner/test': {
-        pushedBranches: ['pr'],
-        // currentBranch: 'pr',
-        files: mainFiles,
-        history: [
-          {
-            //   action: GitActionTypes.PUSH,
-            //   branch: 'main',
-            //   files: mainFiles,
-            // },
-            // {
-            //   action: GitActionTypes.MERGE,
-            //   base: 'main',
-            //   head: 'pr',
-            // },
+  const mockGitHub = new MockGithub(
+    {
+      repo: {
+        'owner/test': {
+          pushedBranches: ['pr'],
+          // currentBranch: 'pr',
+          files: mainFiles,
+          history: [
+            {
+              action: GitActionTypes.PUSH,
+              branch: 'pr',
+              files,
+            },
+          ],
+          // history: [
+          //   {
+          //     //   action: GitActionTypes.PUSH,
+          //     //   branch: 'main',
+          //     //   files: mainFiles,
+          //     // },
+          //     // {
+          //     //   action: GitActionTypes.MERGE,
+          //     //   base: 'main',
+          //     //   head: 'pr',
+          //     // },
 
-            action: GitActionTypes.PUSH,
-            branch: 'pr',
-            files,
-          },
-        ],
+          //     action: GitActionTypes.PUSH,
+          //     branch: 'pr',
+          //     files,
+          //   },
+          // ],
+        },
       },
     },
-  });
+    // path.join(__dirname, 'setup'),
+  );
 
   return {
     setup: () => mockGitHub.setup(),
@@ -89,9 +99,10 @@ export function createMockGitHub({
 
       const configuredAct = factory(
         act
-          .setGithubToken('')
+          .setGithubToken('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')
           .setEnv('GITHUB_SERVER_URL', `${parentDirectory}${path.sep}`)
           .setEnv('GITHUB_REPOSITORY', 'owner/test'),
+        // .setEnv('CLONE_DIR', path.join(parentDirectory, 'owner/test')),
       );
 
       return {
@@ -100,6 +111,9 @@ export function createMockGitHub({
 
           return configuredAct.runEvent(event, {
             ...(logFile ? logActOutput(logFile) : {}),
+            // cwd: parentDirectory,
+            // workflowFile: repoPath,
+            // bind: true,
             ...rest,
           });
         },
