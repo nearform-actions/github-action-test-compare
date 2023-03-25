@@ -72,8 +72,8 @@ runs:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
           ## Test compare ⚠️
-          The tests within this PR have passed against the production code within the **${{ github.event.pull_request.base.ref }}** branch. 
-          If tests have been added or modified, then they are not targeting production code changes within this PR. Please review.
+          The tests within this PR have passed in the **${{ github.event.pull_request.base.ref }}** branch. 
+          Therefore, if this PR is fixing an existing behavior, the tests added are likely to not be testing the new behavior. Please review.
         edit-mode: replace
 
     - name: Check test success, fail action
