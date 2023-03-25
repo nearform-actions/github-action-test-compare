@@ -1,9 +1,5 @@
 import path from 'path';
-import {
-  CreateRepositoryFile,
-  GitActionTypes,
-  MockGithub,
-} from '@kie/mock-github';
+import { CreateRepositoryFile, MockGithub } from '@kie/mock-github';
 import { Act, RunOpts, Step } from '@kie/act-js';
 
 export type ConfiguredAct = {
@@ -51,33 +47,7 @@ export function createMockGitHub({
     {
       repo: {
         'owner/test': {
-          pushedBranches: ['pr'],
-          // currentBranch: 'pr',
-          files: mainFiles,
-          history: [
-            {
-              action: GitActionTypes.PUSH,
-              branch: 'pr',
-              files,
-            },
-          ],
-          // history: [
-          //   {
-          //     //   action: GitActionTypes.PUSH,
-          //     //   branch: 'main',
-          //     //   files: mainFiles,
-          //     // },
-          //     // {
-          //     //   action: GitActionTypes.MERGE,
-          //     //   base: 'main',
-          //     //   head: 'pr',
-          //     // },
-
-          //     action: GitActionTypes.PUSH,
-          //     branch: 'pr',
-          //     files,
-          //   },
-          // ],
+          files: [...mainFiles, ...files],
         },
       },
     },

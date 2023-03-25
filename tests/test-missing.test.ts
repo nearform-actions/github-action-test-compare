@@ -1,4 +1,3 @@
-import { Moctokit } from '@kie/mock-github';
 import { createMockGitHub, MockGitHub, failureStep } from './utils';
 
 describe('github-action-test-compare', () => {
@@ -42,72 +41,20 @@ describe('github-action-test-compare', () => {
   it('should return error for no tests folder available', async () => {
     const act = await mockGitHub.configure((act) =>
       act.setEnv('GITHUB_BASE_REF', 'main').setEvent({
-        // pull_request: {
-        //   ...pullRequest,
-        //   base: {
-        //     ...pullRequest.base,
-        //     repo: {
-        //       ...pullRequest.base.repo,
-        //       url: 'https://api.github.com/users/owner/test',
-        //     },
-        //   },
-        // },
         pull_request: {
           head: {
             ref: 'pr',
           },
           base: {
             ref: 'main',
-            // repo: {
-            //   full_name: 'owner/pr',
-            //   name: 'pr',
-            //   owner: {
-            //     login: 'owner',
-            //   },
-            // },
           },
         },
-
-        // base: {
-        //   ref: 'main',
-        //   repo: {
-        //     full_name: 'owner/test',
-        //     name: 'pr',
-        //     owner: {
-        //       login: 'owner',
-        //     },
-        //     url: 'https://api.github.com/users/owner/test',
-        //   },
-        // },
       }),
     );
 
-    const moctokit = new Moctokit('http://api.github.com');
-
     const result = await act.runEvent('pull_request', {
       logFile: 'missing-tests-no-tests-folder.log',
-      // mockSteps: {
-      //   run: [
-      //     {
-      //       id: 'checkout-target',
-      //       mockWith: 'foo',
-      //     },
-      //   ],
-      // },
-      // mockApi: [
-      //   moctokit.rest.repos
-      //     .get({
-      //       owner: 'owner',
-      //       repo: 'pr',
-      //     })
-      //     .setResponse({ status: 200, data: {} }),
-      //   moctokit.rest.pulls
-      //     .list()
-      //     .setResponse([{ status: 200, data: [{ title: 'pr' }] }]),
-      // ],
     });
-
-    console.log(result);
 
     expect(result).toEqual(
       expect.arrayContaining([
