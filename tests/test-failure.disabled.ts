@@ -41,7 +41,7 @@ describe('github-action-test-compare', () => {
     );
 
     const result = await runEvent('pull_request', {
-      logFile: 'failing-tests.log',
+      logFile: 'failure-tests.log',
     });
 
     expect(result).toEqual(
