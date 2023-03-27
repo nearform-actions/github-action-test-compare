@@ -72,7 +72,6 @@ export function createMockGitHub({
           .setGithubToken('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')
           .setEnv('GITHUB_SERVER_URL', `${parentDirectory}${path.sep}`)
           .setEnv('GITHUB_REPOSITORY', 'owner/test'),
-        // .setEnv('CLONE_DIR', path.join(parentDirectory, 'owner/test')),
       );
 
       return {

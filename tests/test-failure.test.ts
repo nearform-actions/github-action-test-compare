@@ -30,6 +30,7 @@ describe('github-action-test-compare', () => {
     const { runEvent } = await mockGitHub.configure((act) =>
       act.setEvent({
         pull_request: {
+          number: 1,
           head: {
             ref: 'pr',
           },
@@ -46,7 +47,7 @@ describe('github-action-test-compare', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        expect.objectContaining(failureStep('Main Test compare')),
+        expect.objectContaining(successStep('Main Test compare')),
         expect.objectContaining(successStep('Main Install')),
         expect.objectContaining(failureStep('Main Run tests')),
       ]),

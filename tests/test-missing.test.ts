@@ -12,7 +12,7 @@ describe('github-action-test-compare', () => {
     await mockGitHub.teardown();
   });
 
-  it.skip('should return error for no target branch available', async () => {
+  it('should return error for no target branch available', async () => {
     const act = await mockGitHub.configure((act) =>
       act.setEvent({
         pull_request: {

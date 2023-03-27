@@ -6,6 +6,7 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, 'tests/branches/**'],
     globals: true,
     testTimeout: 120000,
+    outputDiffMaxLines: 1000,
   },
   plugins: [viteTsconfigPaths()],
 });
