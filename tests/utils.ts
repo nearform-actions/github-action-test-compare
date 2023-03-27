@@ -42,17 +42,13 @@ export function createMockGitHub({
     },
   ];
 
-  // In the mock, the main branch is the PR, target is main
-  const mockGitHub = new MockGithub(
-    {
-      repo: {
-        'owner/test': {
-          files: [...mainFiles, ...files],
-        },
+  const mockGitHub = new MockGithub({
+    repo: {
+      'owner/test': {
+        files: [...mainFiles, ...files],
       },
     },
-    // path.join(__dirname, 'setup'),
-  );
+  });
 
   return {
     setup: () => mockGitHub.setup(),
@@ -69,7 +65,6 @@ export function createMockGitHub({
 
       const configuredAct = factory(
         act
-          .setGithubToken('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')
           .setEnv('GITHUB_SERVER_URL', `${parentDirectory}${path.sep}`)
           .setEnv('GITHUB_REPOSITORY', 'owner/test'),
       );
@@ -80,9 +75,6 @@ export function createMockGitHub({
 
           return configuredAct.runEvent(event, {
             ...(logFile ? logActOutput(logFile) : {}),
-            // cwd: parentDirectory,
-            // workflowFile: repoPath,
-            // bind: true,
             ...rest,
           });
         },
