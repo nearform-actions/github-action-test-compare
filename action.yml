@@ -26,6 +26,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Dump var
+      env:
+        VAR: ${{ inputs.label }}
+      shell: sh
+      run: echo "$VAR"
+
     - name: Check target branch
       if: github.event.pull_request.base.ref == ''
       uses: actions/github-script@v6
@@ -95,6 +101,7 @@ runs:
       if: ${{ inputs.label }}
       uses: actions/github-script@v6
       with:
+        github-token: ${{ github.token }}
         script: |
           github.rest.issues.deleteLabel({
             issue_number: context.issue.number,
