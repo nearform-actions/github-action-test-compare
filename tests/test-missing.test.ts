@@ -40,7 +40,7 @@ describe('github-action-test-compare', () => {
 
   it('should return error for no tests folder available', async () => {
     const act = await mockGitHub.configure((act) =>
-      act.setEnv('GITHUB_BASE_REF', 'main').setEvent({
+      act.setEvent({
         pull_request: {
           head: {
             ref: 'pr',
