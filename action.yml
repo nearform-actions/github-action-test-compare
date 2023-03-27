@@ -73,7 +73,7 @@ runs:
         body: |
           ## Test compare ⚠️
           The tests within this PR have passed in the **${{ github.event.pull_request.base.ref }}** branch. 
-          Therefore, if this PR is fixing an existing behavior, the tests added are likely to not be testing the new behavior. Please review.
+          Therefore, if this PR is fixing existing behavior, the tests added are likely to not be testing the new behavior. Please review.
         edit-mode: replace
 
     - name: Check test success, fail action
