@@ -3,13 +3,20 @@ import { CreateRepositoryFile, MockGithub } from '@kie/mock-github';
 import { Act, RunOpts, Step } from '@kie/act-js';
 
 export type ConfiguredAct = {
-  runEvent: (event: string, opts?: RunOpts | undefined) => Promise<Step[]>;
+  runEvent: (
+    event: string,
+    opts?: RunEventOptions | undefined,
+  ) => Promise<Step[]>;
 };
 
 export type MockGitHub = {
   setup: () => Promise<void>;
   teardown: () => Promise<void>;
   configure: (factory?: (act: Act) => Act) => Promise<ConfiguredAct>;
+};
+
+export type RunEventOptions = Omit<RunOpts, 'workflowFile'> & {
+  workflowFile?: (repoPath: string) => string;
 };
 
 function logActOutput(logFile: string) {
@@ -71,11 +78,12 @@ export function createMockGitHub({
       );
 
       return {
-        runEvent: (event: string, options: RunOpts = {}) => {
-          const { logFile, ...rest } = options;
+        runEvent: (event: string, options: RunEventOptions = {}) => {
+          const { logFile, workflowFile, ...rest } = options;
 
           return configuredAct.runEvent(event, {
             ...(logFile ? logActOutput(logFile) : {}),
+            workflowFile: workflowFile ? workflowFile(repoPath) : undefined,
             ...rest,
           });
         },
