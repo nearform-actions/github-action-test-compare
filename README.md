@@ -12,7 +12,7 @@ on:
 
 jobs:
   run:
-    if: contains(github.event.pull_request.labels.*.name, 'performance')
+    if: contains(github.event.pull_request.labels.*.name, 'test-compare')
     runs-on: ubuntu-latest
     permissions:
       contents: read
