@@ -55,12 +55,12 @@ export function createMockGitHub({
     teardown: () => mockGitHub.teardown(),
     configure: async (factory: (act: Act) => Act = (act) => act) => {
       const repoPath = mockGitHub.repo.getPath('owner/test');
-      const act = new Act(repoPath);
 
       if (!repoPath) {
         throw new Error('No mock GitHub repo path found.');
       }
 
+      const act = new Act(repoPath);
       const parentDirectory = path.dirname(repoPath);
 
       const configuredAct = factory(
