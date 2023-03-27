@@ -1,12 +1,7 @@
 import path from 'path';
-import {
-  createMockGitHub,
-  MockGitHub,
-  failureStep,
-  successStep,
-} from './utils';
+import { createMockGitHub, MockGitHub, successStep } from './utils';
 
-describe.only('github-action-test-compare', () => {
+describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
 
   beforeEach(async () => {
@@ -14,7 +9,11 @@ describe.only('github-action-test-compare', () => {
       files: [
         {
           src: path.join(__dirname, './branches/label'),
-          dest: '.',
+          dest: '.github/workflows',
+        },
+        {
+          src: path.join(__dirname, './branches/pr-production/test'),
+          dest: 'test',
         },
       ],
     });
@@ -26,7 +25,7 @@ describe.only('github-action-test-compare', () => {
     await mockGitHub.teardown();
   });
 
-  it.skip('should not remove label if none specified', async () => {
+  it('should not remove label if none specified', async () => {
     const { runEvent } = await mockGitHub.configure((act) =>
       act.setEvent({
         pull_request: {
@@ -54,7 +53,7 @@ describe.only('github-action-test-compare', () => {
 
   it('should remove label if specified', async () => {
     const { runEvent } = await mockGitHub.configure((act) =>
-      act.setInput('label', 'label').setEvent({
+      act.setEvent({
         pull_request: {
           number: 1,
           head: {
@@ -69,13 +68,14 @@ describe.only('github-action-test-compare', () => {
 
     const result = await runEvent('pull_request', {
       logFile: 'label-specified.log',
+      workflowFile: (repoPath) => `${repoPath}/.github/workflows/label.yml`,
     });
-
-    console.log({ result });
 
     expect(result).toEqual(
       expect.arrayContaining([
-        expect.objectContaining(successStep('Remove label if specified')),
+        expect.objectContaining(
+          successStep('Main Remove label if specified', 'label'),
+        ),
       ]),
     );
   });

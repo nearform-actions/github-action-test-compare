@@ -26,12 +26,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Dump var
-      env:
-        VAR: ${{ inputs.label }}
-      shell: sh
-      run: echo "$VAR"
-
     - name: Check target branch
       if: github.event.pull_request.base.ref == ''
       uses: actions/github-script@v6
@@ -98,7 +92,7 @@ runs:
       run: echo "${{ steps.run-tests.outcome }} ${{ github.event.pull_request.number }}"
 
     - name: Remove label if specified
-      if: ${{ inputs.label }}
+      if: ${{ !env.ACT && inputs.label }}
       uses: actions/github-script@v6
       with:
         github-token: ${{ github.token }}
@@ -109,6 +103,11 @@ runs:
             repo: context.repo.repo,
             name: inputs.label
           })
+
+    - name: Remove label if specified
+      if: ${{ env.ACT && inputs.label }}
+      shell: sh
+      run: echo "${{ inputs.label }}"
 
     - name: Check test success, fail action
       if: steps.run-tests.outcome == 'success'
