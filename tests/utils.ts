@@ -65,7 +65,7 @@ export function createMockGitHub({
 
       const configuredAct = factory(
         act
-          .setGithubToken('token')
+          //   .setGithubToken('token')
           .setEnv('GITHUB_SERVER_URL', `${parentDirectory}${path.sep}`)
           .setEnv('GITHUB_REPOSITORY', 'owner/test'),
       );
