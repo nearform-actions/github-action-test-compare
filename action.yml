@@ -101,7 +101,7 @@ runs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            name: inputs.label
+            name: ${{ inputs.label }}
           })
 
     - name: Remove label if specified
