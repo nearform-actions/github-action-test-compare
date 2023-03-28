@@ -1,3 +1,5 @@
+[![ci](https://github.com/nearform-actions/optic-release-automation-action/actions/workflows/ci.yml/badge.svg)](https://github.com/nearform-actions/optic-release-automation-action/actions/workflows/ci.yml)
+
 # github-action-test-compare
 
 **Compare tests against production**
