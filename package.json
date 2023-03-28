@@ -50,7 +50,8 @@
     "jest": "^28.1.1",
     "lint-staged": "^13.2.0",
     "prettier": "^2.8.7",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "vitest": "^0.29.8"
   },
   "lint-staged": {
     "*.{js,jsx}": "eslint --cache --fix"
