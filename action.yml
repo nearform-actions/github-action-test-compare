@@ -103,6 +103,7 @@ runs:
             repo: context.repo.repo,
             name: ['${{ inputs.label }}']
           })
+      continue-on-error: true
 
     - name: Remove label if specified
       if: ${{ env.ACT && inputs.label }}
