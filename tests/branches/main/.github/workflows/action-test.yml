@@ -15,5 +15,5 @@ jobs:
         with:
           path: testAction
 
-      - name: Main test compare action
+      - name: Test compare action
         uses: ./testAction
