@@ -40,7 +40,7 @@ jobs:
 name: Test compare
 on:
   pull_request:
-    types: [opened, reopened, synchronize, labeled, unlabeled]
+    types: [opened, reopened, synchronize, labeled]
 
 jobs:
   run:

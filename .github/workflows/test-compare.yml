@@ -5,6 +5,7 @@ on:
 
 jobs:
   run:
+    if: contains(github.event.pull_request.labels.*.name, 'test-compare')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,6 +17,6 @@ jobs:
           path: testAction
 
       - name: Test compare
-        uses: ./testAction
+        uses: ./
         with:
-          label: label
+          label: test-compare
