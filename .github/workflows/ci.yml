@@ -26,6 +26,8 @@ jobs:
           npm ci
           npm run lint
           npm test
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   automerge:
     name: Merge dependabot's PRs

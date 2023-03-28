@@ -34,3 +34,5 @@ jobs:
           name: act-logs.zip
           path: '*.log'
           retention-days: 5
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
