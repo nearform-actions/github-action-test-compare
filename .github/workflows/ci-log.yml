@@ -6,17 +6,24 @@ on:
 
 jobs:
   test:
-    name: Test with logging
+    name: Lint and test
     if: contains(github.event.pull_request.labels.*.name, 'test-log')
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        os: [ubuntu-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
+          node-version: ${{ matrix.node-version }}
       - run: |
           npm ci
           npm run test:ci:log
