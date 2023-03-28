@@ -8,7 +8,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "baseUrl": "src",
-    "types": ["vitest/globals"],
+    "types": ["jest"],
     "lib": ["ESNext"]
   }
 }
