@@ -17,3 +17,5 @@ jobs:
 
       - name: Test compare
         uses: ./testAction
+        with:
+          label: label

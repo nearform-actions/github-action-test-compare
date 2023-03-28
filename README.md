@@ -2,6 +2,27 @@
 
 Compare tests against production
 
+## Basic usage
+
+#### ./github/workflows/test-compare.yml
+
+```yml
+name: Test compare
+on: pull_request
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Test compare
+        uses: nearform-actions/github-action-test-compare@v1
+```
+
+## Run on PR label
+
 #### ./github/workflows/test-compare.yml
 
 ```yml
@@ -20,4 +41,6 @@ jobs:
     steps:
       - name: Test compare
         uses: nearform-actions/github-action-test-compare@v1
+        with:
+          label: test-compare # automatically remove label on completion
 ```

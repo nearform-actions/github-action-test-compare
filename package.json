@@ -10,6 +10,8 @@
     "test:local": "cross-env ACT_BINARY=/usr/local/bin/act vitest --single-thread --run",
     "test:watch": "cross-env ACT_BINARY=/usr/local/bin/act vitest --single-thread --watch",
     "test:log": "cross-env ACT_LOG=true ACT_BINARY=/usr/local/bin/act vitest --single-thread --run",
+    "test:changed": "cross-env ACT_BINARY=/usr/local/bin/act vitest --single-thread --run --changed",
+    "test:changed:log": "cross-env ACT_LOG=true ACT_BINARY=/usr/local/bin/act vitest --single-thread --run --changed",
     "test:coverage": "vitest run --coverage",
     "prepare": "husky install"
   },
@@ -24,9 +26,7 @@
     "url": "https://github.com/nearform-actions/github-action-test-compare/issues"
   },
   "homepage": "https://github.com/nearform-actions/github-action-test-compare#readme",
-  "dependencies": {
-    "@actions/core": "^1.10.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^17.5.0",
     "@commitlint/config-conventional": "^17.4.4",

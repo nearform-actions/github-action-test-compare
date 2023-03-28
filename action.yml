@@ -18,6 +18,10 @@ inputs:
     required: false
     description: 'The folder for the target branch checkout'
     default: '__target__'
+  label:
+    required: false
+    description: 'Name of a label to remove after action completion'
+    default: ''
 
 runs:
   using: 'composite'
@@ -86,6 +90,25 @@ runs:
       if: ${{ env.ACT && steps.run-tests.outcome == 'success' }}
       shell: sh
       run: echo "${{ steps.run-tests.outcome }} ${{ github.event.pull_request.number }}"
+
+    - name: Remove label if specified
+      if: ${{ !env.ACT && inputs.label }}
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ github.token }}
+        script: |
+          github.rest.issues.removeLabel({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            name: ['${{ inputs.label }}']
+          })
+      continue-on-error: true
+
+    - name: Remove label if specified
+      if: ${{ env.ACT && inputs.label }}
+      shell: sh
+      run: echo "${{ inputs.label }}"
 
     - name: Check test success, fail action
       if: steps.run-tests.outcome == 'success'
