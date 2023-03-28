@@ -32,7 +32,7 @@ describe('github-action-test-compare', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        expect.objectContaining(failureStep('Main Test compare')),
+        expect.objectContaining(failureStep('Main Test compare action')),
         expect.objectContaining(failureStep('Main Check target branch')),
       ]),
     );
@@ -58,7 +58,7 @@ describe('github-action-test-compare', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        expect.objectContaining(failureStep('Main Test compare')),
+        expect.objectContaining(failureStep('Main Test compare action')),
         expect.objectContaining(
           failureStep(
             'Main Copy tests',
