@@ -12,7 +12,7 @@ inputs:
     default: 'npm test'
   tests:
     required: false
-    description: 'Test files/folders as a comma-separated list of globs'
+    description: 'Root test folder to copy to target folder'
     default: 'test'
   targetFolder:
     required: false
