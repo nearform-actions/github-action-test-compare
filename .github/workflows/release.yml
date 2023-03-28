@@ -4,14 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       semver:
-        description: The semver to use
+        description: 'The semver to use'
         required: true
-        default: patch
+        default: 'patch'
         type: choice
         options:
+          - auto
           - patch
           - minor
           - major
+      baseTag:
+        description: 'base release tag'
   pull_request:
     types: [closed]
 
@@ -22,8 +25,9 @@ jobs:
       pull-requests: write
       contents: write
     steps:
-      - uses: nearform/optic-release-automation-action@v4
+      - uses: nearform-actions/optic-release-automation-action@v4
         with:
           semver: ${{ github.event.inputs.semver }}
-          commit-message: 'chore: release {version}'
+          base-tag: ${{ github.event.inputs.baseTag }}
+          sync-semver-tags: 'true'
           build-command: npm ci
