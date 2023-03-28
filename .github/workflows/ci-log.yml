@@ -24,9 +24,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: |
-          npm ci
-          npm run test:ci:log
+      - run: npm ci
+      - run: npm run test:ci:log
       - name: Archive logs
         if: ${{ always() }}
         uses: actions/upload-artifact@v3

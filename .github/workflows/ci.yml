@@ -22,10 +22,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: |
-          npm ci
-          npm run lint
-          npm test
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
