@@ -1,5 +1,10 @@
 import path from 'path';
-import { createMockGitHub, MockGitHub, failedStep, successStep } from './utils';
+import {
+  createMockGitHub,
+  MockGitHub,
+  failureStep,
+  successStep,
+} from './utils';
 
 describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
@@ -25,6 +30,7 @@ describe('github-action-test-compare', () => {
     const { runEvent } = await mockGitHub.configure((act) =>
       act.setEvent({
         pull_request: {
+          number: 1,
           head: {
             ref: 'pr',
           },
@@ -36,16 +42,14 @@ describe('github-action-test-compare', () => {
     );
 
     const result = await runEvent('pull_request', {
-      logFile: 'failing-tests.log',
+      logFile: 'failure-tests.log',
     });
 
-    expect(
-      result.map((step) => ({ name: step.name, status: step.status })),
-    ).toEqual(
+    expect(result).toEqual(
       expect.arrayContaining([
-        expect.objectContaining(failedStep('Main Test compare')),
+        expect.objectContaining(successStep('Main Test compare')),
         expect.objectContaining(successStep('Main Install')),
-        expect.objectContaining(failedStep('Main Run tests')),
+        expect.objectContaining(failureStep('Main Run tests')),
       ]),
     );
   });

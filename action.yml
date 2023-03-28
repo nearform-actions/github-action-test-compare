@@ -34,6 +34,7 @@ runs:
 
     - name: Checkout target branch
       uses: actions/checkout@v3
+      if: ${{ !env.ACT }}
       with:
         ref: ${{ github.event.pull_request.base.ref }}
         path: ${{ inputs.targetFolder }}
@@ -45,29 +46,34 @@ runs:
     - name: Install
       shell: sh
       working-directory: ${{ inputs.targetFolder }}
-      run: |
-        ${{ inputs.installCommand }}
+      run: ${{ inputs.installCommand }}
 
     - name: Run tests
       shell: sh
       id: run-tests
       working-directory: ${{ inputs.targetFolder }}
       continue-on-error: true
-      run: |
-        ${{ inputs.testCommand }}
+      run: ${{ inputs.testCommand }}
 
-    - name: Find Comment
+    - name: Find comment
       uses: peter-evans/find-comment@v2
+      if: ${{ !env.ACT }}
       id: find-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        comment-author: 'github-action-test-compare[bot]'
-        body-includes: Test compare
+        comment-author: 'github-actions[bot]'
+        body-includes: '## Test compare ⚠️'
+
+    - name: Find comment
+      if: ${{ env.ACT }}
+      shell: sh
+      run: echo "${{ github.event.pull_request.number }}"
 
     - name: Create or update comment
-      if: steps.run-tests.outcome == 'success'
+      if: ${{ !env.ACT && steps.run-tests.outcome == 'success' }}
       uses: peter-evans/create-or-update-comment@v2
       with:
+        author:
         comment-id: ${{ steps.find-comment.outputs.comment-id }}
         issue-number: ${{ github.event.pull_request.number }}
         body: |
@@ -75,6 +81,11 @@ runs:
           The tests within this PR have passed in the **${{ github.event.pull_request.base.ref }}** branch. 
           Therefore, if this PR is fixing existing behavior, the tests added are likely to not be testing the new behavior. Please review.
         edit-mode: replace
+
+    - name: Create or update comment
+      if: ${{ env.ACT && steps.run-tests.outcome == 'success' }}
+      shell: sh
+      run: echo "${{ steps.run-tests.outcome }} ${{ github.event.pull_request.number }}"
 
     - name: Check test success, fail action
       if: steps.run-tests.outcome == 'success'

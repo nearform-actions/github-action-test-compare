@@ -44,7 +44,7 @@ export function createMockGitHub({
 
   const mockGitHub = new MockGithub({
     repo: {
-      testAction: {
+      'owner/test': {
         files: [...mainFiles, ...files],
       },
     },
@@ -54,8 +54,20 @@ export function createMockGitHub({
     setup: () => mockGitHub.setup(),
     teardown: () => mockGitHub.teardown(),
     configure: async (factory: (act: Act) => Act = (act) => act) => {
-      const act = new Act(mockGitHub.repo.getPath('testAction'));
-      const configuredAct = factory(act.setGithubToken('token'));
+      const repoPath = mockGitHub.repo.getPath('owner/test');
+
+      if (!repoPath) {
+        throw new Error('No mock GitHub repo path found.');
+      }
+
+      const act = new Act(repoPath);
+      const parentDirectory = path.dirname(repoPath);
+
+      const configuredAct = factory(
+        act
+          .setEnv('GITHUB_SERVER_URL', `${parentDirectory}${path.sep}`)
+          .setEnv('GITHUB_REPOSITORY', 'owner/test'),
+      );
 
       return {
         runEvent: (event: string, options: RunOpts = {}) => {
@@ -79,7 +91,7 @@ export function successStep(name: string, output?: string) {
   };
 }
 
-export function failedStep(name: string, output?: string) {
+export function failureStep(name: string, output?: string) {
   return {
     name,
     ...(output ? { output } : {}),
