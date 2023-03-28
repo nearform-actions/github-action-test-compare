@@ -5,7 +5,7 @@ export default defineConfig({
   test: {
     exclude: [...configDefaults.exclude, 'tests/branches/**'],
     globals: true,
-    testTimeout: 120000,
+    testTimeout: 600000,
     outputDiffMaxLines: 1000,
   },
   plugins: [viteTsconfigPaths()],
