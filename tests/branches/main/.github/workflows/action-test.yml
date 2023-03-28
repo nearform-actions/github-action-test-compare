@@ -1,4 +1,4 @@
-name: Test compare
+name: Main test compare workflow
 on:
   pull_request:
     types: [opened, reopened, synchronize, labeled]
@@ -15,5 +15,5 @@ jobs:
         with:
           path: testAction
 
-      - name: Test compare
+      - name: Main test compare action
         uses: ./testAction
