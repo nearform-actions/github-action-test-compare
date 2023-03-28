@@ -6,7 +6,7 @@ import {
   successStep,
 } from './utils';
 
-describe.skip('github-action-test-compare', () => {
+describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
 
   beforeEach(async () => {
