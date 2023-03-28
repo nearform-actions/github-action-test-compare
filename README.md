@@ -2,7 +2,7 @@
 
 **Compare tests against production**
 
-This GitHub Action automatically runs the tests within a PR against the target branch and adds a warning comment to the PR if the tests pass. This action can be used to determine if tests added or modified actually test production changes within the same PR.
+This GitHub Action automatically runs the tests within a PR against the target branch and adds a warning comment to the PR if the tests pass. This action's intention is to test if the PR is testing the right thing. The action is suitable for PRs that contain fixes and corresponding tests.
 
 The action runs the following process:
 
