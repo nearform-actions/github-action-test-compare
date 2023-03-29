@@ -1,10 +1,23 @@
+import path from 'path';
 import { createMockGitHub, MockGitHub, failureStep } from '../utils';
 
-describe.skip('github-action-test-compare', () => {
+describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
 
   beforeEach(async () => {
-    mockGitHub = createMockGitHub();
+    mockGitHub = createMockGitHub({
+      files: [
+        {
+          src: path.resolve(__dirname, './main'),
+          dest: '.',
+        },
+        {
+          src: path.resolve(__dirname, './main'),
+          dest: '__target__',
+        },
+      ],
+    });
+
     await mockGitHub.setup();
   });
 
