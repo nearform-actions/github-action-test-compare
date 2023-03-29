@@ -25,6 +25,7 @@
     "url": "https://github.com/nearform-actions/github-action-test-compare/issues"
   },
   "homepage": "https://github.com/nearform-actions/github-action-test-compare#readme",
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.21.3",
     "@babel/preset-env": "^7.20.2",
