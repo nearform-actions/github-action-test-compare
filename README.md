@@ -72,6 +72,7 @@ jobs:
 
 This is a [composite GitHub Action](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) tested with [act-js](https://github.com/kiegroup/act-js) and [Mock GitHub](https://github.com/kiegroup/mock-github).
 
-- When running tests locally with `npm test`, you must have [Act](https://github.com/nektos/act) installed and available at `/usr/local/bin/act`.
+- When running tests locally with `npm test`, you must have [Act](https://github.com/nektos/act) installed.
+- If you have issues running Act, you can set the path to the Act binary (`where act`) as an environment variable - `export ACT_BINARY=/path/to/act`
 - You can enable Act logging with `npm run test:log` - the output is written to `.log` files in the root folder.
 - You can run Act tests with logging in CI by adding a `test-log` label to a PR. The logs are added as a build artifact.

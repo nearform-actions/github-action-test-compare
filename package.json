@@ -8,10 +8,10 @@
     "test": "is-ci-cli test:ci test:local",
     "test:ci": "jest --runInBand",
     "test:ci:log": "cross-env ACT_LOG=true jest --runInBand",
-    "test:local": "cross-env ACT_BINARY=/usr/local/bin/act jest --runInBand",
-    "test:watch": "cross-env ACT_BINARY=/usr/local/bin/act jest --runInBand --watch",
-    "test:log": "cross-env ACT_LOG=true ACT_BINARY=/usr/local/bin/act jest --runInBand",
-    "test:coverage": "cross-env ACT_BINARY=/usr/local/bin/act jest --runInBand --coverage",
+    "test:local": "jest --runInBand",
+    "test:watch": "jest --runInBand --watch",
+    "test:log": "cross-env ACT_LOG=true --runInBand",
+    "test:coverage": "cross-env jest --runInBand --coverage",
     "prepare": "husky install"
   },
   "repository": {
