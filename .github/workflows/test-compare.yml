@@ -16,7 +16,7 @@ jobs:
         with:
           path: testAction
 
-      - name: Test compare action
+      - name: Test compare
         uses: ./
         with:
           label: test-compare
