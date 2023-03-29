@@ -1,4 +1,4 @@
-name: pr-non-production
+name: test-failure
 on:
   pull_request:
     types: [opened, reopened, synchronize, labeled]

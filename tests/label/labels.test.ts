@@ -1,18 +1,22 @@
 import path from 'path';
 import { createMockGitHub, MockGitHub, successStep } from '../utils';
 
-describe.skip('github-action-test-compare', () => {
+describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
 
   beforeEach(async () => {
     mockGitHub = createMockGitHub({
       files: [
         {
-          src: path.join(__dirname, './branches/label'),
-          dest: '.github/workflows',
+          src: path.resolve(__dirname, './main'),
+          dest: '.',
         },
         {
-          src: path.join(__dirname, './branches/pr-production/test'),
+          src: path.resolve(__dirname, './main'),
+          dest: '__target__',
+        },
+        {
+          src: path.join(__dirname, './pr/test'),
           dest: 'test',
         },
       ],
@@ -23,32 +27,6 @@ describe.skip('github-action-test-compare', () => {
 
   afterEach(async () => {
     await mockGitHub.teardown();
-  });
-
-  it('should not remove label if none specified', async () => {
-    const { runEvent } = await mockGitHub.configure((act) =>
-      act.setEvent({
-        pull_request: {
-          number: 1,
-          head: {
-            ref: 'pr',
-          },
-          base: {
-            ref: 'main',
-          },
-        },
-      }),
-    );
-
-    const result = await runEvent('pull_request', {
-      logFile: 'label-unspecified.log',
-    });
-
-    const removeLabelStep = result.find(
-      (step) => step.name === 'Remove label if specified',
-    );
-
-    expect(removeLabelStep).toBeUndefined();
   });
 
   it('should remove label if specified', async () => {
@@ -68,11 +46,11 @@ describe.skip('github-action-test-compare', () => {
 
     const result = await runEvent('pull_request', {
       logFile: 'label-specified.log',
-      workflowFile: (repoPath) => `${repoPath}/.github/workflows/label.yml`,
     });
 
     expect(result).toEqual(
       expect.arrayContaining([
+        expect.objectContaining(successStep('Main Test compare')),
         expect.objectContaining(
           successStep('Main Remove label if specified', 'label'),
         ),
