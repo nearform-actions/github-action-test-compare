@@ -10,7 +10,7 @@
     "test:ci:log": "cross-env ACT_LOG=true jest --runInBand",
     "test:local": "jest --runInBand",
     "test:watch": "jest --runInBand --watch",
-    "test:log": "cross-env ACT_LOG=true --runInBand",
+    "test:log": "cross-env ACT_LOG=true jest --runInBand",
     "test:coverage": "cross-env jest --runInBand --coverage",
     "prepare": "husky install"
   },
