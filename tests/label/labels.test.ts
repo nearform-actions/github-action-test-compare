@@ -1,5 +1,5 @@
 import path from 'path';
-import { createMockGitHub, MockGitHub, successStep } from './utils';
+import { createMockGitHub, MockGitHub, successStep } from '../utils';
 
 describe.skip('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;

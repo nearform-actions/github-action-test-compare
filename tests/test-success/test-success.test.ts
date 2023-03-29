@@ -4,7 +4,7 @@ import {
   MockGitHub,
   failureStep,
   successStep,
-} from './utils';
+} from '../utils';
 
 describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
@@ -13,7 +13,15 @@ describe('github-action-test-compare', () => {
     mockGitHub = createMockGitHub({
       files: [
         {
-          src: path.join(__dirname, './branches/pr-non-production/test'),
+          src: path.resolve(__dirname, './main'),
+          dest: '.',
+        },
+        {
+          src: path.resolve(__dirname, './main'),
+          dest: '__target__',
+        },
+        {
+          src: path.join(__dirname, './pr/test'),
           dest: 'test',
         },
       ],

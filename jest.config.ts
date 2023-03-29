@@ -1,7 +1,7 @@
 import type { Config } from '@jest/types';
 
 const jestConfig: Config.InitialOptions = {
-  modulePathIgnorePatterns: ['<rootDir>/tests/branches'],
+  testRegex: '(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$',
   testTimeout: 120000,
 };
 

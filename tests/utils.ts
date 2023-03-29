@@ -30,29 +30,16 @@ export function createMockGitHub({
 }: {
   files?: CreateRepositoryFile[];
 } = {}): MockGitHub {
-  const mainFiles = [
-    {
-      src: path.resolve(__dirname, './branches/main'),
-      dest: '.',
-    },
-    {
-      src: path.resolve(__dirname, '..', 'action.yml'),
-      dest: '/action.yml',
-    },
-    {
-      src: path.resolve(__dirname, './branches/main'),
-      dest: '__target__',
-    },
-    {
-      src: path.resolve(__dirname, '..', 'action.yml'),
-      dest: '__target__/action.yml',
-    },
-  ];
-
   const mockGitHub = new MockGithub({
     repo: {
       'owner/test': {
-        files: [...mainFiles, ...files],
+        files: [
+          {
+            src: path.resolve(__dirname, '..', 'action.yml'),
+            dest: '/action.yml',
+          },
+          ...files,
+        ],
       },
     },
   });

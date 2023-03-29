@@ -1,4 +1,4 @@
-name: Test compare
+name: pr-non-production
 on:
   pull_request:
     types: [opened, reopened, synchronize, labeled]

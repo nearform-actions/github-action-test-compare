@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "baseUrl": "src",
+    "baseUrl": "tests",
     "types": ["vitest/globals", "jest"],
     "lib": ["ESNext"]
   }
