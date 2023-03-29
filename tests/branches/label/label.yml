@@ -1,4 +1,4 @@
-name: Label workflow
+name: Test compare
 on:
   pull_request:
     types: [opened, reopened, synchronize, labeled]
@@ -15,7 +15,7 @@ jobs:
         with:
           path: testAction
 
-      - name: Label action
+      - name: Test compare
         uses: ./testAction
         with:
           label: label
