@@ -49,7 +49,7 @@ describe.skip('github-action-test-compare', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        expect.objectContaining(failureStep('Main Test compare action')),
+        expect.objectContaining(failureStep('Main Test compare')),
         expect.objectContaining(successStep('Main Copy tests')),
         expect.objectContaining(successStep('Main Install')),
         expect.objectContaining(successStep('Main Run tests')),
