@@ -4,7 +4,6 @@ import {
   MockGitHub,
   failureStep,
   successStep,
-  isErrored,
 } from './utils';
 
 describe('github-action-test-compare', () => {
@@ -47,10 +46,6 @@ describe('github-action-test-compare', () => {
     const result = await runEvent('pull_request', {
       logFile: 'success-tests.log',
     });
-
-    if (isErrored(result)) {
-      return;
-    }
 
     expect(result).toEqual(
       expect.arrayContaining([

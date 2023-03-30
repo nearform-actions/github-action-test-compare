@@ -1,5 +1,5 @@
 import path from 'path';
-import { createMockGitHub, isErrored, MockGitHub, successStep } from './utils';
+import { createMockGitHub, MockGitHub, successStep } from './utils';
 
 describe.skip('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
@@ -44,10 +44,6 @@ describe.skip('github-action-test-compare', () => {
       logFile: 'label-unspecified.log',
     });
 
-    if (isErrored(result)) {
-      return;
-    }
-
     const removeLabelStep = result.find(
       (step) => step.name === 'Remove label if specified',
     );
@@ -74,10 +70,6 @@ describe.skip('github-action-test-compare', () => {
       logFile: 'label-specified.log',
       workflowFile: (repoPath) => `${repoPath}/.github/workflows/label.yml`,
     });
-
-    if (isErrored(result)) {
-      return;
-    }
 
     expect(result).toEqual(
       expect.arrayContaining([
