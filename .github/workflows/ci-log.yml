@@ -1,0 +1,30 @@
+name: Continuous Integration (logging)
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+
+jobs:
+  test:
+    name: Lint and test
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'test-log')
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - run: |
+          npm ci
+          npm run lint
+          npm run test:ci:log
+      - name: Archive logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: act-logs.zip
+          path: '*.log'
+          retention-days: 5
