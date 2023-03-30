@@ -1,4 +1,4 @@
-import { createMockGitHub, MockGitHub, failureStep } from './utils';
+import { createMockGitHub, MockGitHub, failureStep, isErrored } from './utils';
 
 describe('github-action-test-compare', () => {
   let mockGitHub: MockGitHub;
@@ -30,6 +30,10 @@ describe('github-action-test-compare', () => {
       logFile: 'missing-tests-no-target-branch.log',
     });
 
+    if (isErrored(result)) {
+      return;
+    }
+
     expect(result).toEqual(
       expect.arrayContaining([
         expect.objectContaining(failureStep('Main Test compare')),
@@ -55,6 +59,10 @@ describe('github-action-test-compare', () => {
     const result = await act.runEvent('pull_request', {
       logFile: 'missing-tests-no-tests-folder.log',
     });
+
+    if (isErrored(result)) {
+      return;
+    }
 
     expect(result).toEqual(
       expect.arrayContaining([

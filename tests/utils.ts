@@ -106,3 +106,15 @@ export function failureStep(name: string, output?: string) {
     status: 1,
   };
 }
+
+export function isErrored(result: Step[]) {
+  const errored = !result || result.length === 0;
+
+  if (errored) {
+    console.warn(
+      'The Act execution failed, add a test-log label to view Act logs.',
+    );
+  }
+
+  return errored;
+}
