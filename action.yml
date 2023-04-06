@@ -75,7 +75,7 @@ runs:
 
     - name: Create or update comment
       if: ${{ !env.ACT && steps.run-tests.outcome == 'success' }}
-      uses: peter-evans/create-or-update-comment@v2
+      uses: peter-evans/create-or-update-comment@v3
       with:
         author:
         comment-id: ${{ steps.find-comment.outputs.comment-id }}
