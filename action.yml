@@ -26,6 +26,13 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Check Event Type
+      run: |
+        if [[ "${{ github.event_name }}" != "pull_request" && "${{ github.event_name }}" != "pull_request_target" ]]; then
+          echo "This workflow was not triggered by a pull request or pull request target event."
+          exit 1
+        fi
+
     - name: Check target branch
       if: github.event.pull_request.base.ref == ''
       uses: actions/github-script@v6
