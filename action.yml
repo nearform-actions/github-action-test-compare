@@ -36,6 +36,14 @@ runs:
     - name: Checkout branch
       uses: actions/checkout@v3
 
+    - name: Fail if target folder exists
+      shell: sh
+      run: |
+        if [ -d "${{ inputs.targetFolder }}" ]; then
+          echo "Target folder ${{ inputs.targetFolder }} already exists."
+          exit 1
+        fi
+
     - name: Checkout target branch
       uses: actions/checkout@v3
       if: ${{ !env.ACT }}
