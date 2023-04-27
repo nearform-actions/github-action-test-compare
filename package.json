@@ -34,7 +34,7 @@
     "@commitlint/config-conventional": "^17.6.1",
     "@jest/globals": "^29.5.0",
     "@jest/types": "^29.5.0",
-    "@kie/act-js": "^2.0.6",
+    "@kie/act-js": "^2.0.8",
     "@kie/mock-github": "^1.0.3",
     "@types/jest": "^29.5.1",
     "@types/node": "^18.16.1",
