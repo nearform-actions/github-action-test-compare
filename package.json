@@ -1,6 +1,6 @@
 {
   "name": "github-action-test-compare",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Compare tests against production",
   "type": "module",
   "scripts": {
