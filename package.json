@@ -32,7 +32,7 @@
     "@babel/preset-typescript": "^7.22.15",
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@jest/globals": "^29.6.3",
+    "@jest/globals": "^29.7.0",
     "@jest/types": "^29.6.1",
     "@kie/act-js": "^2.3.0",
     "@kie/mock-github": "^2.0.0",
