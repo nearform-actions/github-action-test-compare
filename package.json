@@ -27,7 +27,7 @@
   "homepage": "https://github.com/nearform-actions/github-action-test-compare#readme",
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.23.7",
+    "@babel/core": "^7.23.9",
     "@babel/preset-env": "^7.23.9",
     "@babel/preset-typescript": "^7.23.3",
     "@commitlint/cli": "^18.6.0",
