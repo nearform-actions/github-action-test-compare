@@ -36,7 +36,7 @@
     "@jest/types": "^29.6.1",
     "@kie/act-js": "^2.6.0",
     "@kie/mock-github": "^2.0.1",
-    "@types/jest": "^29.5.11",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.16",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.62.0",
