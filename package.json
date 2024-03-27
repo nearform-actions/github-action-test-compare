@@ -12,7 +12,7 @@
     "test:watch": "jest --runInBand --watch",
     "test:log": "cross-env ACT_LOG=true jest --runInBand",
     "test:coverage": "cross-env jest --runInBand --coverage",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
