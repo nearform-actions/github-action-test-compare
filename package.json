@@ -37,7 +37,7 @@
     "@kie/act-js": "^2.6.2",
     "@kie/mock-github": "^2.0.1",
     "@types/jest": "^29.5.12",
-    "@types/node": "^22.4.0",
+    "@types/node": "^22.4.1",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vercel/ncc": "^0.38.1",
