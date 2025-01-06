@@ -76,3 +76,5 @@ This is a [composite GitHub Action](https://docs.github.com/en/actions/creating-
 - If you have issues running Act, you can set the path to the Act binary (`where act`) as an environment variable - `export ACT_BINARY=/path/to/act`
 - You can enable Act logging with `npm run test:log` - the output is written to `.log` files in the root folder.
 - You can run Act tests with logging in CI by adding a `test-log` label to a PR. The logs are added as a build artifact.
+
+[![banner](https://raw.githubusercontent.com/nearform/.github/refs/heads/master/assets/os-banner-green.svg)](https://www.nearform.com/contact/?utm_source=open-source&utm_medium=banner&utm_campaign=os-project-pages)
