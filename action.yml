@@ -34,7 +34,7 @@ runs:
           core.setFailed('No target branch found.')
 
     - name: Checkout branch
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Fail if target folder exists
       shell: sh
@@ -45,7 +45,7 @@ runs:
         fi
 
     - name: Checkout target branch
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       if: ${{ !env.ACT }}
       with:
         ref: ${{ github.event.pull_request.base.ref }}
