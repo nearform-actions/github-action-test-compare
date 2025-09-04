@@ -28,7 +28,7 @@ runs:
   steps:
     - name: Check target branch
       if: github.event.pull_request.base.ref == ''
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           core.setFailed('No target branch found.')
@@ -101,7 +101,7 @@ runs:
 
     - name: Remove label if specified
       if: ${{ !env.ACT && inputs.label }}
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         github-token: ${{ github.token }}
         script: |
@@ -125,7 +125,7 @@ runs:
 
     - name: Check test failure, action success, delete comment
       if: steps.run-tests.outcome != 'success' && steps.find-comment.outputs.comment-id != ''
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         github-token: ${{ github.token }}
         script: |
